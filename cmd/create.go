@@ -1,13 +1,9 @@
-/*
-Copyright © 2024 NAME HERE <EMAIL ADDRESS>
-*/
 package cmd
 
 import (
 	"fmt"
 
-	"github.com/Giovani-Coelho/Todo-CLI/src/database/repository"
-	"github.com/Giovani-Coelho/Todo-CLI/src/service"
+	usecase "github.com/Giovani-Coelho/Todo-CLI/src/useCase"
 	"github.com/spf13/cobra"
 )
 
@@ -17,13 +13,9 @@ var createCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		taskRepository := repository.NewMemoryRepository()
-		taskService := service.NewTaskService(taskRepository)
-
-		err := taskService.AddTask(args[0])
-		if err != nil {
-			fmt.Println("Error:", err)
-		}
+		task := usecase.NewTaskUseCase()
+		msg := task.CreateTask(args)
+		fmt.Println(msg)
 	},
 }
 
