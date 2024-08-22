@@ -1,9 +1,14 @@
 package repository
 
-import "github.com/Giovani-Coelho/Todo-CLI/src/database/entity"
+import "github.com/Giovani-Coelho/Todo-CLI/src/infra/database/entity"
 
 type MemoryRepository struct {
 	tasks []entity.Task
+}
+
+type ITaskRepository interface {
+	NewTask(task entity.Task) error
+	GetTasks() ([]entity.Task, error)
 }
 
 func NewMemoryRepository() *MemoryRepository {
@@ -12,7 +17,7 @@ func NewMemoryRepository() *MemoryRepository {
 	}
 }
 
-func (r *MemoryRepository) AddTask(task entity.Task) error {
+func (r *MemoryRepository) NewTask(task entity.Task) error {
 	task.ID = len(r.tasks) + 1
 	r.tasks = append(r.tasks, task)
 	return nil

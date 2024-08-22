@@ -1,25 +1,30 @@
 package service
 
 import (
-	"github.com/Giovani-Coelho/Todo-CLI/src/database/entity"
-	"github.com/Giovani-Coelho/Todo-CLI/src/database/repository"
+	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database/entity"
+	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database/repository"
 )
 
 type TaskService struct {
-	repo repository.ITaskRepository
+	taskRepository repository.ITaskRepository
 }
 
-func NewTaskService(repo repository.ITaskRepository) *TaskService {
-	return &TaskService{repo: repo}
+type ITaskService interface {
+	NewTask(name string) error
+	ListTasks() ([]entity.Task, error)
 }
 
-func (s *TaskService) AddTask(name string) error {
+func NewTaskService(taskRepository repository.ITaskRepository) ITaskService {
+	return &TaskService{taskRepository}
+}
+
+func (tr *TaskService) NewTask(name string) error {
 	task := entity.Task{
 		Name: name,
 	}
-	return s.repo.AddTask(task)
+	return tr.taskRepository.NewTask(task)
 }
 
-func (s *TaskService) ListTasks() ([]entity.Task, error) {
-	return s.repo.GetTasks()
+func (tr *TaskService) ListTasks() ([]entity.Task, error) {
+	return tr.taskRepository.GetTasks()
 }

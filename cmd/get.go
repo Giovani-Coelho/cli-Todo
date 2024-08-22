@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Giovani-Coelho/Todo-CLI/src/database/repository"
+	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database/repository"
 	"github.com/Giovani-Coelho/Todo-CLI/src/service"
 	"github.com/spf13/cobra"
 )
