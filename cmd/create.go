@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/Giovani-Coelho/Todo-CLI/src/di"
+	taskUseCase "github.com/Giovani-Coelho/Todo-CLI/src/useCase/task"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +13,7 @@ var createCmd = &cobra.Command{
 	Short: "A brief description of your command",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
-		res := di.TaskController.NewTask(args[0])
+		res := taskUseCase.Task.NewTask(args[0])
 		fmt.Println(res)
 	},
 }
