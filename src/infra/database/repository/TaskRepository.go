@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"fmt"
+
 	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database"
 	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database/entity"
 )
@@ -21,8 +23,11 @@ func NewMemoryRepository() *MemoryRepository {
 }
 
 func (r *MemoryRepository) NewTask(task entity.Task) error {
-	task.ID = len(r.tasks) + 1
-	r.tasks = append(r.tasks, task)
+	stmt := "INSERT INTO task (Name, Done, CreatedAt) VALUES (?, ?, ?)"
+	_, err := database.SQL.Exec(stmt, task.Name, task.Done, task.CreatedAt)
+	if err != nil {
+		return fmt.Errorf("error inserting task: %w", err)
+	}
 	return nil
 }
 
