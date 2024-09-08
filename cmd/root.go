@@ -4,26 +4,37 @@ Copyright © 2024 Giovani Coelho
 package cmd
 
 import (
+	"fmt"
+	"log"
 	"os"
 
+	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database"
+	taskUseCase "github.com/Giovani-Coelho/Todo-CLI/src/useCase/task"
 	"github.com/spf13/cobra"
 )
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "Todo-CLI",
-	Short: ``,
-	Long:  ``,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+	Use:   "app",
+	Short: "CLI app for managing tasks",
+	Run: func(cmd *cobra.Command, args []string) {
+		// Esse Run só será executado se nenhum comando específico for passado
+		fmt.Println("Use a valid command.")
+	},
 }
 
-// Execute adds all child commands to the root command and sets flags appropriately.
-// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	database.InitDB()
+	if database.SQL == nil {
+		log.Fatal("Failed to initialize database connection")
+	}
+	defer database.SQL.Close()
+
+	taskUseCase.InitDependencies()
+
 	err := rootCmd.Execute()
 	if err != nil {
+		fmt.Println("Error executing command:", err)
 		os.Exit(1)
 	}
 }

@@ -1,7 +1,8 @@
 package entity
 
 type Task struct {
-	ID   int
-	Name string
-	Done bool
+	ID        int
+	Name      string
+	Done      bool
+	CreatedAt string
 }
