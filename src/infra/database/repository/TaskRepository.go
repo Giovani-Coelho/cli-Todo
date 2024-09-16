@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/Giovani-Coelho/Todo-CLI/src/infra/database"
@@ -14,6 +15,7 @@ type MemoryRepository struct {
 type ITaskRepository interface {
 	NewTask(task entity.Task) error
 	GetTasks() ([]entity.Task, error)
+	DeleteTask(id string) error
 }
 
 func NewMemoryRepository() *MemoryRepository {
@@ -57,4 +59,24 @@ func (r *MemoryRepository) GetTasks() ([]entity.Task, error) {
 	}
 
 	return tasks, nil
+}
+
+func (r *MemoryRepository) DeleteTask(id string) error {
+	stmt := "DELETE FROM task WHERE ID = ?"
+
+	result, err := database.SQL.Exec(stmt, id)
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("task not found")
+	}
+
+	return nil
 }

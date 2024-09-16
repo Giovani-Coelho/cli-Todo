@@ -10,6 +10,7 @@ var Task ITaskUseCase
 type ITaskUseCase interface {
 	NewTask(name string) string
 	ListTasks() ([]entity.Task, error)
+	DeleteTask(id string) error
 }
 
 type TaskUseCase struct {
